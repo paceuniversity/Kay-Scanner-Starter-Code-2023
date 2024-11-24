@@ -34,7 +34,7 @@ public class TokenStream {
 			input = new BufferedReader(new FileReader(fileName));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + fileName);
-			// System.exit(1); // Removed to allow ScannerDemo to continue
+			System.exit(1); // Removed to allow ScannerDemo to continue
 			// running after the input file is not found.
 			isEof = true;
 		}
@@ -150,9 +150,6 @@ public class TokenStream {
 			} else if (t.getValue().equals("true") || t.getValue().equals("false")) {
 				t.setType("Literal");
 			}
-			if (isEndOfToken(nextChar)) { // If token is valid, returns.
-				return t;
-			}
 		}
 
 		if (isDigit(nextChar)) { // check for integer literals
@@ -163,9 +160,7 @@ public class TokenStream {
 			}
 			// An Integer-Literal is to be only followed by a space,
 			// an operator, or a separator.
-			if (isEndOfToken(nextChar)) {// If token is valid, returns.
-				return t;
-			} 
+			return t;
 		}
 
 		t.setType("Other");
