@@ -105,8 +105,9 @@ public class TokenStream {
 						return t;
 					} else {
 						t.setType("Other");
+						return t;
 					}
-					return t;
+					
 				case '=': //==
 					nextChar = readChar();
 					if (nextChar == '='){
@@ -283,4 +284,5 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
 
