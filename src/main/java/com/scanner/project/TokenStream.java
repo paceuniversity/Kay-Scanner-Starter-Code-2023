@@ -248,7 +248,7 @@ public class TokenStream {
 	}
 
 	private boolean isEndOfToken(char c) { // Is the value a seperate token?
-		return (isWhiteSpace(с) || isOperator(с) || isSeparator(с) || isEof);
+		return (isWhiteSpace(c) || isOperator(c) || isSeparator(c) || isEof);
 	}
 
 	private void skipWhiteSpace() {
@@ -282,6 +282,7 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
 
 
 
