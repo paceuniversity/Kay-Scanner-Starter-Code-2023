@@ -39,35 +39,34 @@ public class TokenStream {
 		skipWhiteSpace();
 
 		// Then check for a comment, and bypass it
-		// but remember that / may also be a division operator.
 		while (nextChar == '/') {
-			
-			char current = nextChar;
+			// Changed if to while to avoid the 2nd line being printed when
+			// there are two comment lines in a row.
 			nextChar = readChar();
-			
-			if (nextChar == '/') { 
-				
+			if (nextChar == '/') { // If / is followed by another /
+				// skip rest of line - it's a comment.
 				do {
 					nextChar = readChar();
 				} while (!isEndOfLine(nextChar) && !isEof);
 
 				skipWhiteSpace();
 			} else {
-				
+				// A slash followed by anything else must be an operator.
 				t.setValue("/");
 				t.setType("Operator");
 				return t;
 			}
 		}
 
-		
+		// Then check for an operator; this part of the code should recover 2-character
+		// operators as well as 1-character ones.
 		if (isOperator(nextChar)) {
 			t.setType("Operator");
 			t.setValue(t.getValue() + nextChar);
 			
 			switch (nextChar) {
 				case '<':
-					
+					// <=
 					nextChar = readChar();
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
@@ -75,7 +74,7 @@ public class TokenStream {
 					}
 					return t;
 				case '>':
-					
+					// >=
 					nextChar = readChar();
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
@@ -83,29 +82,28 @@ public class TokenStream {
 					}
 					return t;
 				case ':':
-					
+					// == is :=
 					nextChar = readChar();
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
 					} else {
-						
 						t.setType("Other");
 					}
 					return t;
 				case '=': 
-					
+					// ==
 					nextChar = readChar();
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
 					} else {
-						
+						// Single = is 'Other'
 						t.setType("Other");
 					}
 					return t;
 				case '!':
-					
+					// !=
 					nextChar = readChar();
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
@@ -113,36 +111,34 @@ public class TokenStream {
 					}
 					return t;
 				case '|':
-					
+					// Look for ||
 					nextChar = readChar();
 					if (nextChar == '|') {
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
 					} else {
-						
+						// Single | is 'Other'
 						t.setType("Other");
 					}
 					return t;
-
 				case '&':
-					
+					// Look or &&
 					nextChar = readChar();
 					if (nextChar == '&') {
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
 					} else {
-						
+						// Single & is 'Other'
 						t.setType("Other");
 					}
 					return t;
-
-				default: 
+				default: // all other operators (+, -, *)
 					nextChar = readChar();
 					return t;
 			}
 		}
 
-		
+		// Then check for a separator
 		if (isSeparator(nextChar)) {
 			t.setType("Separator");
 			t.setValue(t.getValue() + nextChar);
@@ -150,15 +146,15 @@ public class TokenStream {
 			return t;
 		}
 
-		
+		// Then check for an identifier, keyword, or literal.
 		if (isLetter(nextChar)) {
-			
+			// Set to an identifier
 			t.setType("Identifier");
 			while ((isLetter(nextChar) || isDigit(nextChar))) {
 				t.setValue(t.getValue() + nextChar);
 				nextChar = readChar();
 			}
-			
+			// now see if this is a keyword
 			if (isKeyword(t.getValue())) {
 				t.setType("Keyword");
 			} else if (t.getValue().equals("True") || t.getValue().equals("False")) {
@@ -194,7 +190,6 @@ public class TokenStream {
 			nextChar = readChar();
 		}
 		
-		// Finally check for whitespaces and bypass them
 		skipWhiteSpace();
 
 		return t;
@@ -244,6 +239,7 @@ public class TokenStream {
 	}
 
 	private boolean isOperator(char c) {
+		// Checks for characters that start operators
 		return (c == '+' || c == '-' || c == '*' || c == '/' || c == '<' || c == '>' || c == '=' || c == '!' || c == '&' || c == '|' || c == ':');
 	}
 
