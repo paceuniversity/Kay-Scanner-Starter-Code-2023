@@ -87,6 +87,7 @@ public class TokenStream {
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
+						t.setType("Operator");
 					} else {
 						t.setType("Other");
 					}
@@ -255,3 +256,4 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
