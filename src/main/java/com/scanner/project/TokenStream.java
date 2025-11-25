@@ -31,7 +31,12 @@ public class TokenStream {
 	// Pass a filename for the program text as a source for the TokenStream.
 	public TokenStream(String fileName) {
 		try {
-			input = new BufferedReader(new FileReader(fileName));
+			input = new BufferedReader(
+				new java.io.InputStreamReader(
+					new java.io.FileInputStream(fileName),
+					java.nio.charset.StandardCharsets.UTF_8
+				)
+			);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + fileName);
 			// System.exit(1); // Removed to allow ScannerDemo to continue
@@ -284,5 +289,8 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
+
+
 
 
