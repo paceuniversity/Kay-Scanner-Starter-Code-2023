@@ -96,7 +96,7 @@ public class TokenStream {
 						nextChar = readChar();
 					}
 					return t;
-				case ':':
+				case '：':
 					// == is :=
 					nextChar = readChar();
 					if (nextChar == '='){
@@ -284,6 +284,7 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
 
 
 
