@@ -98,12 +98,16 @@ public class TokenStream {
 					return t;
 				case ':':
 					// == is :=
-					nextChar = readChar();
+					System.out.println("DEBUG: Found colon. Reading next char..."); // Лог 1
+    				nextChar = readChar();
+    				System.out.println("DEBUG: Next char is code: " + (int)nextChar + " char: " + nextChar); // Лог 2
+					
 					if (nextChar == '='){
 						t.setValue(t.getValue() + nextChar);
 						nextChar = readChar();
 						return t;
 					} else {
+						System.out.println("DEBUG: Setting type to Other"); // Лог 3
 						t.setType("Other");
 						return t;
 					}
@@ -284,6 +288,7 @@ public class TokenStream {
 		return isEof;
 	}
 }
+
 
 
 
